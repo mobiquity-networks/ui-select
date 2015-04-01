@@ -15,6 +15,9 @@ uis.directive('uiSelectMatch', ['uiSelectConfig', function(uiSelectConfig) {
       attrs.$observe('placeholder', function(placeholder) {
         $select.placeholder = placeholder !== undefined ? placeholder : uiSelectConfig.placeholder;
       });
+      attrs.$observe('placeholderaddmore', function (placeholderAddMore) {
+        $select.placeholderAddMore = placeholderAddMore;
+      });
 
       function setAllowClear(allow) {
         $select.allowClear = (angular.isDefined(allow)) ? (allow === '') ? true : (allow.toLowerCase() === 'true') : false;

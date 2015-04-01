@@ -56,8 +56,12 @@ uis.directive('uiSelectMultiple', ['uiSelectMinErr','$timeout', function(uiSelec
 
       ctrl.getPlaceholder = function(){
         //Refactor single?
-        if($select.selected.length) return;
-        return $select.placeholder;
+        if($select.search !== "") return;
+        if($select.selected.length) {
+          return $select.placeholderAddMore;
+        } else {
+          return $select.placeholder;
+        }
       };
 
 

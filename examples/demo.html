@@ -64,11 +64,29 @@
 
   <h3>Bootstrap theme</h3>
   <p>Selected: {{address.selected.formatted_address}}</p>
+  <ui-select ng-model="addressLoading.selected"
+             theme="select2"
+             ng-disabled="disabled"
+             reset-search-input="false"
+             style="width: 300px;"
+             loading-placeholder="Loading ..."
+             title="Choose an address">
+    <ui-select-match placeholder="Enter an address...">{{$select.selected.formatted_address}}</ui-select-match>
+    <ui-select-choices repeat="address in addressesLoading track by $index"
+             refresh="refreshAddressesLoading($select)"
+             refresh-delay="0">
+      <div ng-bind-html="address.formatted_address | highlight: $select.search"></div>
+    </ui-select-choices>
+  </ui-select>
+
+  <h3>Bootstrap theme</h3>
+  <p>Selected: {{address.selected.formatted_address}}</p>
   <ui-select ng-model="address.selected"
              theme="bootstrap"
              ng-disabled="disabled"
              reset-search-input="false"
              style="width: 300px;"
+             loadingPlaceholder="Loading ..."
              title="Choose an address">
     <ui-select-match placeholder="Enter an address...">{{$select.selected.formatted_address}}</ui-select-match>
     <ui-select-choices repeat="address in addresses track by $index"

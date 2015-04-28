@@ -16,6 +16,8 @@ uis.controller('uiSelectCtrl',
   ctrl.searchEnabled = uiSelectConfig.searchEnabled;
   ctrl.sortable = uiSelectConfig.sortable;
   ctrl.refreshDelay = uiSelectConfig.refreshDelay;
+  ctrl.loadingPlaceholder = uiSelectConfig.loadingPlaceholder;
+  ctrl.isLoading = true;
 
   ctrl.removeSelected = false; //If selected item(s) should be removed from dropdown list
   ctrl.closeOnSelect = true; //Initialized inside uiSelect directive link function
@@ -62,7 +64,7 @@ uis.controller('uiSelectCtrl',
   // When the user clicks on ui-select, displays the dropdown list
   ctrl.activate = function(initSearchValue, avoidReset) {
     if (!ctrl.disabled  && !ctrl.open) {
-      if(!avoidReset) _resetSearchInput();
+      if(!avoidReset) { _resetSearchInput(); }
 
       $scope.$broadcast('uis:activate');
 
@@ -177,6 +179,29 @@ uis.controller('uiSelectCtrl',
       }, ctrl.refreshDelay);
     }
   };
+  ctrl.onScroll = function(onScrollAttr) {
+    if (onScrollAttr !== undefined) {
+      $scope.$eval(onScrollAttr);
+    }
+  };
+  ctrl.startLoading = function () {
+    $timeout(function () {
+      $scope.$apply(function () {
+        ctrl.isLoading = true;
+      });
+    });
+  };
+  ctrl.stopLoading = function () {
+    $timeout(function () {
+      $scope.$apply(function () {
+        ctrl.isLoading = false;
+      });
+    });
+  };
+
+
+
+
 
   ctrl.setActiveItem = function(item) {
     ctrl.activeIndex = ctrl.items.indexOf(item);
@@ -202,7 +227,7 @@ uis.controller('uiSelectCtrl',
 
   ctrl.isDisabled = function(itemScope) {
 
-    if (!ctrl.open) return;
+    if (!ctrl.open) { return; }
 
     var itemIndex = ctrl.items.indexOf(itemScope[ctrl.itemProperty]);
     var isDisabled = false;
@@ -222,7 +247,7 @@ uis.controller('uiSelectCtrl',
   ctrl.select = function(item, skipFocusser, $event) {
     if (item === undefined || !item._uiSelectChoiceDisabled) {
 
-      if ( ! ctrl.items && ! ctrl.search ) return;
+      if ( ! ctrl.items && ! ctrl.search ) { return; }
 
       if (!item || !item._uiSelectChoiceDisabled) {
         if(ctrl.tagging.isActivated) {
@@ -243,13 +268,13 @@ uis.controller('uiSelectCtrl',
             if ( ctrl.activeIndex === 0 ) {
               // ctrl.tagging pushes items to ctrl.items, so we only have empty val
               // for `item` if it is a detected duplicate
-              if ( item === undefined ) return;
+              if ( item === undefined ) { return; }
 
               // create new item on the fly if we don't already have one;
               // use tagging function if we have one
               if ( ctrl.tagging.fct !== undefined && typeof item === 'string' ) {
                 item = ctrl.tagging.fct(ctrl.search);
-                if (!item) return;
+                if (!item) { return; }
               // if item type is 'string', apply the tagging label
               } else if ( typeof item === 'string' ) {
                 // trim the trailing space
@@ -288,8 +313,8 @@ uis.controller('uiSelectCtrl',
 
   // Closes the dropdown
   ctrl.close = function(skipFocusser) {
-    if (!ctrl.open) return;
-    if (ctrl.ngModel && ctrl.ngModel.$setTouched) ctrl.ngModel.$setTouched();
+    if (!ctrl.open) { return; }
+    if (ctrl.ngModel && ctrl.ngModel.$setTouched) { ctrl.ngModel.$setTouched(); }
     _resetSearchInput();
     ctrl.open = false;
 
@@ -298,7 +323,7 @@ uis.controller('uiSelectCtrl',
   };
 
   ctrl.setFocus = function(){
-    if (!ctrl.focus) ctrl.focusInput[0].focus();
+    if (!ctrl.focus) { ctrl.focusInput[0].focus(); }
   };
 
   ctrl.clear = function($event) {
@@ -345,7 +370,7 @@ uis.controller('uiSelectCtrl',
             return false;
           }
           var inputWidth = containerWidth - input.offsetLeft - 10;
-          if (inputWidth < 50) inputWidth = containerWidth;
+          if (inputWidth < 50) { inputWidth = containerWidth; }
           ctrl.searchInput.css('width', inputWidth+'px');
           return true;
         };
@@ -367,15 +392,15 @@ uis.controller('uiSelectCtrl',
     var processed = true;
     switch (key) {
       case KEY.DOWN:
-        if (!ctrl.open && ctrl.multiple) ctrl.activate(false, true); //In case its the search input in 'multiple' mode
-        else if (ctrl.activeIndex < ctrl.items.length - 1) { ctrl.activeIndex++; }
+        if (!ctrl.open && ctrl.multiple) { ctrl.activate(false, true); } //In case its the search input in 'multiple' mode
+        else if (ctrl.activeIndex < ctrl.items.length - 1) { ctrl.activeIndex += 1; }
         break;
       case KEY.UP:
-        if (!ctrl.open && ctrl.multiple) ctrl.activate(false, true); //In case its the search input in 'multiple' mode
-        else if (ctrl.activeIndex > 0 || (ctrl.search.length === 0 && ctrl.tagging.isActivated && ctrl.activeIndex > -1)) { ctrl.activeIndex--; }
+        if (!ctrl.open && ctrl.multiple) { ctrl.activate(false, true); } //In case its the search input in 'multiple' mode
+        else if (ctrl.activeIndex > 0 || (ctrl.search.length === 0 && ctrl.tagging.isActivated && ctrl.activeIndex > -1)) { ctrl.activeIndex -= 1; }
         break;
       case KEY.TAB:
-        if (!ctrl.multiple || ctrl.open) ctrl.select(ctrl.items[ctrl.activeIndex], true);
+        if (!ctrl.multiple || ctrl.open) { ctrl.select(ctrl.items[ctrl.activeIndex], true); }
         break;
       case KEY.ENTER:
         if(ctrl.open && ctrl.activeIndex >= 0){
@@ -410,7 +435,7 @@ uis.controller('uiSelectCtrl',
       if (ctrl.items.length > 0 || ctrl.tagging.isActivated) {
         _handleDropDownSelection(key);
         if ( ctrl.taggingTokens.isActivated ) {
-          for (var i = 0; i < ctrl.taggingTokens.tokens.length; i++) {
+          for (var i = 0; i < ctrl.taggingTokens.tokens.length; i += 1) {
             if ( ctrl.taggingTokens.tokens[i] === KEY.MAP[e.keyCode] ) {
               // make sure there is a new value to push via tagging
               if ( ctrl.search.length > 0 ) {
@@ -425,7 +450,7 @@ uis.controller('uiSelectCtrl',
               if ( ctrl.tagging.fct ) {
                 newItem = ctrl.tagging.fct( newItem );
               }
-              if (newItem) ctrl.select(newItem, true);
+              if (newItem) { ctrl.select(newItem, true); }
             });
           }
         }
@@ -482,10 +507,11 @@ uis.controller('uiSelectCtrl',
     if (posY > height) {
       container[0].scrollTop += posY - height;
     } else if (posY < highlighted.clientHeight) {
-      if (ctrl.isGrouped && ctrl.activeIndex === 0)
+      if (ctrl.isGrouped && ctrl.activeIndex === 0) {
         container[0].scrollTop = 0; //To make group header visible when going all the way up
-      else
+      } else {
         container[0].scrollTop -= highlighted.clientHeight - posY;
+      }
     }
   }
 

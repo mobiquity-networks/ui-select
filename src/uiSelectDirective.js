@@ -162,6 +162,13 @@ uis.directive('uiSelect',
           $document.off('click', onDocumentClick);
         });
 
+        attrs.$observe('loadingPlaceholder', function() {
+          // $eval() is needed otherwise we get a string instead of a number
+          $select.loadingPlaceholder = (
+            attrs.loadingPlaceholder !== undefined ? attrs.loadingPlaceholder : uiSelectConfig.loadingPlaceholder
+          );
+        });
+
         // Move transcluded elements to their correct position in main template
         transcludeFn(scope, function(clone) {
           // See Transclude in AngularJS http://blog.omkarpatil.com/2012/11/transclude-in-angularjs.html

@@ -39,7 +39,7 @@ app.filter('propsFilter', function() {
   };
 });
 
-app.controller('DemoCtrl', function($scope, $http, $timeout, $interval) {
+app.controller('DemoCtrl', function($scope, $http, $timeout, $q, $interval) {
   $scope.disabled = undefined;
   $scope.searchEnabled = undefined;
 
@@ -174,6 +174,21 @@ app.controller('DemoCtrl', function($scope, $http, $timeout, $interval) {
     ).then(function(response) {
       $scope.addresses = response.data.results;
     });
+  };
+
+  $scope.addressLoading = {};
+  $scope.refreshAddressesLoading = function(select) {
+    var params = {address: select.search, sensor: false};
+    select.startLoading();
+    $timeout(function () {
+      return $http.get(
+        'http://maps.googleapis.com/maps/api/geocode/json',
+        {params: params}
+      ).then(function(response) {
+        select.stopLoading();
+        $scope.addressesLoading = response.data.results;
+      });
+    }, 5000);
   };
 
   $scope.addPerson = function(item, model){

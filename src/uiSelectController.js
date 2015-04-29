@@ -17,7 +17,7 @@ uis.controller('uiSelectCtrl',
   ctrl.sortable = uiSelectConfig.sortable;
   ctrl.refreshDelay = uiSelectConfig.refreshDelay;
   ctrl.loadingPlaceholder = uiSelectConfig.loadingPlaceholder;
-  ctrl.isLoading = true;
+  ctrl.isLoading = false;
   ctrl.isScrolling = false;
 
   ctrl.removeSelected = false; //If selected item(s) should be removed from dropdown list

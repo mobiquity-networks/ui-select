@@ -191,6 +191,42 @@ app.controller('DemoCtrl', function($scope, $http, $timeout, $q, $interval) {
     }, 5000);
   };
 
+
+  $scope.addressScroll = {};
+  $scope.refreshAddressesLoadingScroll = function(select) {
+    var params = {address: select.search, sensor: false};
+    select.startLoading();
+    $timeout(function () {
+      return $http.get(
+        'http://maps.googleapis.com/maps/api/geocode/json',
+        {params: params}
+      ).then(function(response) {
+        select.stopLoading();
+        $scope.addressesScroll = response.data.results;
+      });
+    }, 500);
+  };
+  $scope.lazyLoadAddress = function(select) {
+    var params = {address: select.search, sensor: false};
+    if (!select.isLoading) {
+      select.startScrolling();
+      $timeout(function () {
+        return $http.get(
+          'http://maps.googleapis.com/maps/api/geocode/json',
+          {params: params}
+        ).then(function(response) {
+          select.stopScrolling();
+          if ($scope.addressesScroll) {
+            $scope.addressesScroll = $scope.addressesScroll.concat(response.data.results);
+          } else {
+            $scope.addressesScroll = response.data.results;
+          }
+        });
+      }, 3000);
+    }
+  };
+
+
   $scope.addPerson = function(item, model){
     if(item.hasOwnProperty('isTag')) {
       delete item.isTag;

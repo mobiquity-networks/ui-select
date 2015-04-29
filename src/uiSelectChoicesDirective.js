@@ -55,6 +55,12 @@ uis.directive('uiSelectChoices',
           $select.refresh(attrs.refresh);
         });
 
+        element.bind('scroll', function () {
+          if ($select.onScroll && element[0].scrollTop + element[0].offsetHeight >= element[0].scrollHeight) {
+            $select.onScroll(attrs.onScroll);
+          }
+        });
+
         attrs.$observe('refreshDelay', function() {
           // $eval() is needed otherwise we get a string instead of a number
           var refreshDelay = scope.$eval(attrs.refreshDelay);

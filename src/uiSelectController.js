@@ -18,6 +18,7 @@ uis.controller('uiSelectCtrl',
   ctrl.refreshDelay = uiSelectConfig.refreshDelay;
   ctrl.loadingPlaceholder = uiSelectConfig.loadingPlaceholder;
   ctrl.isLoading = true;
+  ctrl.isScrolling = false;
 
   ctrl.removeSelected = false; //If selected item(s) should be removed from dropdown list
   ctrl.closeOnSelect = true; //Initialized inside uiSelect directive link function
@@ -185,19 +186,21 @@ uis.controller('uiSelectCtrl',
     }
   };
   ctrl.startLoading = function () {
-    $timeout(function () {
-      $scope.$apply(function () {
-        ctrl.isLoading = true;
-      });
-    });
+    ctrl.isLoading = true;
   };
   ctrl.stopLoading = function () {
-    $timeout(function () {
-      $scope.$apply(function () {
-        ctrl.isLoading = false;
-      });
-    });
+    ctrl.isLoading = false;
   };
+  ctrl.startScrolling = function () {
+    ctrl.isScrolling = true;
+    ctrl.isLoading = true;
+  };
+  ctrl.stopScrolling = function () {
+    ctrl.isScrolling = false;
+    ctrl.isLoading = false;
+  };
+
+
 
 
 

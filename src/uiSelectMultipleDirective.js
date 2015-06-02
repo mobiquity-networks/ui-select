@@ -166,6 +166,7 @@ uis.directive('uiSelectMultiple', ['uiSelectMinErr','$timeout', function(uiSelec
 
       scope.$on('uis:activate', function () {
         $selectMultiple.activeMatchIndex = -1;
+        $selectMultiple.refreshComponent();
       });
 
       scope.$watch('$select.disabled', function(newValue, oldValue) {

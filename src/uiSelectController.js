@@ -132,7 +132,7 @@ uis.controller('uiSelectCtrl',
         ctrl.setItemsFn(data);
       }else{
         if ( data !== undefined ) {
-          var filteredItems = data.filter(function(i) {return selectedItems.indexOf(i) < 0;});
+          var filteredItems = data.filter(function(i) {return ctrl.checkboxChoices || selectedItems.indexOf(i) < 0;});
           ctrl.setItemsFn(filteredItems);
         }
       }
@@ -245,6 +245,27 @@ uis.controller('uiSelectCtrl',
     return isDisabled;
   };
 
+  ctrl.chooseAllChoices = function () {
+    ctrl.items.forEach(function (item) {
+      if (!ctrl.checkIfAlreadyChoosed(item)) {
+        ctrl.selected.push(item);
+      }
+    });
+  };
+  ctrl.unchooseAllChoices = function () {
+    ctrl.selected = [];
+  }; 
+  ctrl.chooseOneChoice = function (item) {
+    if (!ctrl.checkIfAlreadyChoosed(item)) {
+      ctrl.selected.push(item);
+    } else {
+      ctrl.selected = ctrl.selected.slice(0, ctrl.selected.indexOf(item))
+      .concat(ctrl.selected.slice(ctrl.selected.indexOf(item)+1)); 
+    }
+  };
+  ctrl.checkIfAlreadyChoosed = function (choice) {
+    return ctrl.checkboxChoices && ctrl.selected.indexOf(choice) !== -1;
+  };
 
   // When the user selects an item with ENTER or clicks the dropdown
   ctrl.select = function(item, skipFocusser, $event) {

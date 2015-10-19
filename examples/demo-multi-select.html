@@ -52,6 +52,13 @@
     .selectize-control > .selectize-dropdown {
       top: 36px;
     }
+    .ui-select-selected-choice {
+      background-color: #BBB;
+    }
+    .select2-actions {
+      width: 100%;
+      height: 22px;
+    }
   </style>
 </head>
 
@@ -111,32 +118,36 @@
   <p>Selected: {{country.selected}}</p> -->
 
   <h1>Multi Selection Demos</h1>
-
+<!--
   <h3>Array of strings</h3>
-  <ui-select multiple ng-model="multipleDemo.colors" theme="bootstrap" ng-disabled="disabled" close-on-select="false" style="width: 300px;" title="Choose a color">
+  <ui-select multiple ng-model="multipleDemo.colors" theme="select2" ng-disabled="disabled" close-on-select="false" style="width: 300px;" title="Choose a color">
     <ui-select-match placeholder="Select colors...">{{$item}}</ui-select-match>
     <ui-select-choices repeat="color in availableColors | filter:$select.search">
       {{color}}
     </ui-select-choices>
   </ui-select>
   <p>Selected: {{multipleDemo.colors}}</p>
+-->
   <hr>
   <h3>Array of objects (sorting enabled)</h3>
-  <ui-select multiple ng-model="multipleDemo.selectedPeople" theme="bootstrap" ng-disabled="disabled" sortable="true" close-on-select="false" style="width: 800px;">
+  <ui-select multiple ng-model="multipleDemo.selectedPeople" theme="select2" ng-disabled="disabled" sortable="true" close-on-select="false" style="width: 800px;" checkbox-choices="true" show-limit="5">
     <ui-select-match placeholder="Select person...">{{$item.name}} &lt;{{$item.email}}&gt;</ui-select-match>
     <ui-select-choices repeat="person in people | propsFilter: {name: $select.search, age: $select.search}">
+      <div ng-class="{'ui-select-selected-choice':$select.checkIfAlreadyChoosed(person)}">
       <div ng-bind-html="person.name | highlight: $select.search"></div>
       <small>
         email: {{person.email}}
         age: <span ng-bind-html="''+person.age | highlight: $select.search"></span>
       </small>
+    </div>
     </ui-select-choices>
   </ui-select>
   <p>Selected: {{multipleDemo.selectedPeople}}</p>
 
+<!--
   <hr>
   <h3>Deselect callback with single property binding</h3>
-  <ui-select multiple ng-model="multipleDemo.deSelectedPeople" on-remove="removed($item, $model)" theme="bootstrap" ng-disabled="disabled" close-on-select="false" style="width: 800px;" title="Choose a person">
+  <ui-select multiple ng-model="multipleDemo.deSelectedPeople" on-remove="removed($item, $model)" theme="select2" ng-disabled="disabled" close-on-select="false" style="width: 800px;" title="Choose a person">
     <ui-select-match placeholder="Select person...">{{$item.name}} &lt;{{$item.email}}&gt;</ui-select-match>
     <ui-select-choices repeat="person.email as person in people | propsFilter: {name: $select.search, age: $select.search}">
       <div ng-bind-html="person.name | highlight: $select.search"></div>
@@ -151,7 +162,7 @@
 
   <hr>
   <h3>Array of objects with single property binding</h3>
-  <ui-select multiple ng-model="multipleDemo.selectedPeopleSimple" theme="bootstrap" ng-disabled="disabled" close-on-select="false" style="width: 800px;" title="Choose a person">
+  <ui-select multiple ng-model="multipleDemo.selectedPeopleSimple" theme="select2" ng-disabled="disabled" close-on-select="false" style="width: 800px;" title="Choose a person">
     <ui-select-match placeholder="Select person...">{{$item.name}} &lt;{{$item.email}}&gt;</ui-select-match>
     <ui-select-choices repeat="person.email as person in people | propsFilter: {name: $select.search, age: $select.search}">
       <div ng-bind-html="person.name | highlight: $select.search"></div>
@@ -165,7 +176,7 @@
 
   <hr>
   <h3>Array of objects (with groupBy)</h3>
-  <ui-select multiple ng-model="multipleDemo.selectedPeopleWithGroupBy" theme="bootstrap" ng-disabled="disabled" close-on-select="false" style="width: 800px;" title="Choose a person">
+  <ui-select multiple ng-model="multipleDemo.selectedPeopleWithGroupBy" theme="select2" ng-disabled="disabled" close-on-select="false" style="width: 800px;" title="Choose a person">
     <ui-select-match placeholder="Select person...">{{$item.name}} &lt;{{$item.email}}&gt;</ui-select-match>
     <ui-select-choices group-by="someGroupFn" repeat="person in people | propsFilter: {name: $select.search, age: $select.search}">
       <div ng-bind-html="person.name | highlight: $select.search"></div>
@@ -176,7 +187,7 @@
     </ui-select-choices>
   </ui-select>
   <p>Selected: {{multipleDemo.selectedPeopleWithGroupBy}}</p>
-
+-->
   <div style="height:500px"></div>
 
 </body>

@@ -51,6 +51,18 @@ uis.directive('uiSelect',
           return $select.isGrouped && group && group.name;
         };
 
+        if(attrs.checkboxChoices){
+          attrs.$observe('checkboxChoices', function(value) {
+            $select.checkboxChoices = !!value;
+          });
+        }
+
+        if(attrs.showLimit){
+          attrs.$observe('showLimit', function(value) {
+            $select.showLimit = parseInt(value);
+          });
+        }
+
         if(attrs.tabindex){
           attrs.$observe('tabindex', function(value) {
             $select.focusInput.attr("tabindex", value);

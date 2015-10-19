@@ -39,7 +39,18 @@ app.filter('propsFilter', function() {
   };
 });
 
-app.controller('DemoCtrl', function($scope, $http, $timeout, $q, $interval) {
+app.controller('DemoCtrl', function($scope, $http, $timeout, $q, $templateCache, $interval) {
+  $templateCache.put('displayChicklet.tpl.html', [
+    '<span>',
+    '  <a class="ng-binding ng-scope"> + </a>',
+    '</span>',
+    '',
+    '<span>',
+    '  <span ng-repeat="$item in $select.selected">',
+    '    {{$item}}',
+    '  </span>',
+    '</span>'
+  ].join(''))
   $scope.disabled = undefined;
   $scope.searchEnabled = undefined;
 

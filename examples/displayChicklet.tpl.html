@@ -1,0 +1,9 @@
+<span ng-if="!chickletsDisplayTemplateUrl && !showListChiclets">
+  <a class="ng-binding ng-scope" ng-click="showListChiclets = true"> + </a>
+</span>
+
+<span ng-if="showListChiclets" ng-mouseleave="showListChiclets = false">
+  <span ng-repeat="$item in $select.selected">
+    {{$item}}
+  </span>
+</span>

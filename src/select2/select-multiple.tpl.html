@@ -24,16 +24,12 @@
         style="width: 34px;"
         ondrop="return false;">
     </li>
-    <li class="select2-actions">
+    <li class="select2-actions" ng-repeat="action in $select.actions">
 
-    <a ng-if="$select.items.length - $select.selected.length"
-      ng-click="$select.chooseAllChoices()">
-      Select All
-    </a>
-    <a ng-if="!($select.items.length - $select.selected.length)"
-      ng-click="$select.unchooseAllChoices()">
-      Unselect All
-    </a>
+      <a ng-if="!action.when || action.when($select)"
+        ng-click="action.action($select)">
+        {{action.text}}
+      </a>
 
     </li>
   </ul>

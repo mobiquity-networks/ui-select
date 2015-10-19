@@ -18,6 +18,11 @@ uis.directive('uiSelectMatch', ['uiSelectConfig', function(uiSelectConfig) {
       attrs.$observe('placeholderaddmore', function (placeholderAddMore) {
         $select.placeholderAddMore = placeholderAddMore;
       });
+      attrs.$observe('chickletsDisplayTemplateUrl', function (chickletsDisplayTemplateUrl) {
+        scope.chickletsDisplayTemplateUrl = chickletsDisplayTemplateUrl;
+      });
+
+
 
       function setAllowClear(allow) {
         $select.allowClear = (angular.isDefined(allow)) ? (allow === '') ? true : (allow.toLowerCase() === 'true') : false;

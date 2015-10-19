@@ -130,8 +130,12 @@
 -->
   <hr>
   <h3>Array of objects (sorting enabled)</h3>
-  <ui-select multiple ng-model="multipleDemo.selectedPeople" theme="select2" ng-disabled="disabled" sortable="true" close-on-select="false" style="width: 800px;" checkbox-choices="true" show-limit="5">
-    <ui-select-match placeholder="Select person...">{{$item.name}} &lt;{{$item.email}}&gt;</ui-select-match>
+  <ui-select multiple ng-model="multipleDemo.selectedPeople" theme="select2" ng-disabled="disabled" sortable="true" close-on-select="false" style="width: 800px;" checkbox-choices="true" show-limit="3">
+    <ui-select-match
+      placeholder="Select person..."
+      chicklets-display-template-url="displayChicklet.tpl.html">
+      {{$item.name}} &lt;{{$item.email}}&gt;
+    </ui-select-match>
     <ui-select-choices repeat="person in people | propsFilter: {name: $select.search, age: $select.search}">
       <div ng-class="{'ui-select-selected-choice':$select.checkIfAlreadyChoosed(person)}">
       <div ng-bind-html="person.name | highlight: $select.search"></div>

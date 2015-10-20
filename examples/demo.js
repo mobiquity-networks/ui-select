@@ -40,15 +40,17 @@ app.filter('propsFilter', function() {
 });
 
 app.controller('DemoCtrl', function($scope, $http, $timeout, $q, $templateCache, $interval) {
+  $scope.when = function ($select, $item) {
+    return $select.selected.length < 3;
+  };
+
   $templateCache.put('displayChicklet.tpl.html', [
     '<span>',
     '  <a class="ng-binding ng-scope"> + </a>',
     '</span>',
     '',
     '<span>',
-    '  <span ng-repeat="$item in $select.selected">',
-    '    {{$item}}',
-    '  </span>',
+    '    {{$select.selected.length}}',
     '</span>'
   ].join(''))
   $scope.disabled = undefined;

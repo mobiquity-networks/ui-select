@@ -1,4 +1,4 @@
-uis.directive('uiSelectMatch', ['uiSelectConfig', function(uiSelectConfig) {
+uis.directive('uiSelectMatch', ['$parse', 'uiSelectConfig', function($parse, uiSelectConfig) {
   return {
     restrict: 'EA',
     require: '^uiSelect',
@@ -21,6 +21,13 @@ uis.directive('uiSelectMatch', ['uiSelectConfig', function(uiSelectConfig) {
       attrs.$observe('chickletsDisplayTemplateUrl', function (chickletsDisplayTemplateUrl) {
         scope.chickletsDisplayTemplateUrl = chickletsDisplayTemplateUrl;
       });
+      scope.displayMatchWhen = function () { return true; };
+      attrs.$observe('displayMatchWhen', function (displayMatchWhen) {
+        if (displayMatchWhen) {
+          scope.displayMatchWhen = $parse(displayMatchWhen)(scope);
+        }
+      });
+
 
 
 

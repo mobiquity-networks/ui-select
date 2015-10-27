@@ -231,19 +231,17 @@ uis.controller('uiSelectCtrl',
   };
 
   ctrl.orderItems = function () {
-    if (ctrl.checkboxChoices) {
-      $timeout(function () {
-        $scope.$apply(function () {
-          ctrl.items.sort(function (item1, item2) {
-            if (ctrl.checkIfAlreadyChoosed(item1)) {
-              return (ctrl.checkIfAlreadyChoosed(item2) ? 0 : -1);
-            } else {
-              return (ctrl.checkIfAlreadyChoosed(item2) ? 1 : 0);
-            }
-          });
+    $timeout(function () {
+      $scope.$apply(function () {
+        ctrl.items.sort(function (item1, item2) {
+          if (ctrl.checkIfAlreadyChoosed(item1)) {
+            return (ctrl.checkIfAlreadyChoosed(item2) ? 0 : -1);
+          } else {
+            return (ctrl.checkIfAlreadyChoosed(item2) ? 1 : 0);
+          }
         });
       });
-    }
+    });
   };
 
   ctrl.isDisabled = function(itemScope) {

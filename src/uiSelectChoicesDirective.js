@@ -76,8 +76,6 @@ uis.directive('uiSelectChoices',
           var refreshDelay = scope.$eval(attrs.refreshDelay);
           $select.refreshDelay = refreshDelay !== undefined ? refreshDelay : uiSelectConfig.refreshDelay;
         });
-
-        $select.orderItems();
       };
     }
   };

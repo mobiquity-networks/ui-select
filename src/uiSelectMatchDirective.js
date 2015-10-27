@@ -18,6 +18,9 @@ uis.directive('uiSelectMatch', ['$parse', 'uiSelectConfig', function($parse, uiS
       attrs.$observe('placeholderaddmore', function (placeholderAddMore) {
         $select.placeholderAddMore = placeholderAddMore;
       });
+      attrs.$observe('chickletsPlaceholder', function (chickletsPlaceholder) {
+        $select.chickletsPlaceholder = chickletsPlaceholder;
+      });
       attrs.$observe('chickletsDisplayTemplateUrl', function (chickletsDisplayTemplateUrl) {
         scope.chickletsDisplayTemplateUrl = chickletsDisplayTemplateUrl;
       });

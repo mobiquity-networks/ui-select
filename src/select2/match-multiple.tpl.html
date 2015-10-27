@@ -4,13 +4,19 @@
   do not work: [class^="select2-choice"]
 -->
 <span class="ui-select-match">
-  <li class="ui-select-match-item select2-search-choice" ng-repeat-start="$item in $select.selected | limitTo: $select.showLimit"
-      ng-class="{'select2-search-choice-focus':$selectMultiple.activeMatchIndex === $index, 'select2-locked':$select.isLocked(this, $index)}"
-      ng-if="displayMatchWhen($select, $item)"
-      ui-select-sort="$select.selected">
-      <span uis-transclude-append></span>
-      <a href="javascript:;" class="ui-select-match-close select2-search-choice-close" ng-click="$selectMultiple.removeChoice($index)" tabindex="-1"></a>
+  <li class="ui-select-match-item select2-search-choice"
+  ng-if="(!$select.selected || !$select.selected.length) && $select.chickletsPlaceholder">
+    <span>{{$select.chickletsPlaceholder}}</span>
   </li>
+
+  <li class="ui-select-match-item select2-search-choice" ng-repeat-start="$item in $select.selected | limitTo: $select.showLimit"
+    ng-class="{'select2-search-choice-focus':$selectMultiple.activeMatchIndex === $index, 'select2-locked':$select.isLocked(this, $index)}"
+    ng-if="displayMatchWhen($select, $item)"
+    ui-select-sort="$select.selected">
+    <span uis-transclude-append></span>
+    <a href="javascript:;" class="ui-select-match-close select2-search-choice-close" ng-click="$selectMultiple.removeChoice($index)" tabindex="-1"></a>
+  </li>
+
   <div ng-repeat-end ng-if="$last && $select.showLimit && $select.selected.length > $select.showLimit">
     <ng-include src="chickletsDisplayTemplateUrl" ng-if="chickletsDisplayTemplateUrl"></ng-include>
     <span ng-if="!chickletsDisplayTemplateUrl">

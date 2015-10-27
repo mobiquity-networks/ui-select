@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.11.2 - 2015-10-27T12:19:12.131Z
+ * Version: 1.7.0 - 2015-10-27T13:57:46.319Z
  * License: MIT
  */
 
@@ -486,17 +486,19 @@ uis.controller('uiSelectCtrl',
   };
 
   ctrl.orderItems = function () {
-    $timeout(function () {
-      $scope.$apply(function () {
-        ctrl.items.sort(function (item1, item2) {
-          if (ctrl.checkIfAlreadyChoosed(item1)) {
-            return (ctrl.checkIfAlreadyChoosed(item2) ? 0 : -1);
-          } else {
-            return (ctrl.checkIfAlreadyChoosed(item2) ? 1 : 0);
-          }
+    if (ctrl.checkboxChoices) {
+      $timeout(function () {
+        $scope.$apply(function () {
+          ctrl.items.sort(function (item1, item2) {
+            if (ctrl.checkIfAlreadyChoosed(item1)) {
+              return (ctrl.checkIfAlreadyChoosed(item2) ? 0 : -1);
+            } else {
+              return (ctrl.checkIfAlreadyChoosed(item2) ? 1 : 0);
+            }
+          });
         });
       });
-    });
+    }
   };
 
   ctrl.isDisabled = function(itemScope) {
@@ -1118,6 +1120,9 @@ uis.directive('uiSelectMatch', ['$parse', 'uiSelectConfig', function($parse, uiS
       });
       attrs.$observe('placeholderaddmore', function (placeholderAddMore) {
         $select.placeholderAddMore = placeholderAddMore;
+      });
+      attrs.$observe('chickletsPlaceholder', function (chickletsPlaceholder) {
+        $select.chickletsPlaceholder = chickletsPlaceholder;
       });
       attrs.$observe('chickletsDisplayTemplateUrl', function (chickletsDisplayTemplateUrl) {
         scope.chickletsDisplayTemplateUrl = chickletsDisplayTemplateUrl;
@@ -1875,7 +1880,7 @@ $templateCache.put("bootstrap/match.tpl.html","<div class=\"ui-select-match\" ng
 $templateCache.put("bootstrap/select-multiple.tpl.html","<div class=\"ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control\" ng-class=\"{open: $select.open}\"><div><div class=\"ui-select-match\"></div><input type=\"text\" autocomplete=\"off\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"false\" class=\"ui-select-search input-xs\" placeholder=\"{{$selectMultiple.getPlaceholder()}}\" ng-disabled=\"$select.disabled\" ng-hide=\"$select.disabled\" ng-click=\"$select.activate()\" ng-model=\"$select.search\" role=\"combobox\" aria-label=\"{{ $select.baseTitle }}\" ondrop=\"return false;\"></div><div class=\"ui-select-choices\"></div></div>");
 $templateCache.put("bootstrap/select.tpl.html","<div class=\"ui-select-container ui-select-bootstrap dropdown\" ng-class=\"{open: $select.open}\"><div class=\"ui-select-match\"></div><input type=\"text\" autocomplete=\"off\" tabindex=\"-1\" aria-expanded=\"true\" aria-label=\"{{ $select.baseTitle }}\" aria-owns=\"ui-select-choices-{{ $select.generatedId }}\" aria-activedescendant=\"ui-select-choices-row-{{ $select.generatedId }}-{{ $select.activeIndex }}\" class=\"form-control ui-select-search\" placeholder=\"{{$select.placeholder}}\" ng-model=\"$select.search\" ng-show=\"$select.searchEnabled && $select.open\"><div class=\"ui-select-choices\"></div></div>");
 $templateCache.put("select2/choices.tpl.html","<ul class=\"ui-select-choices ui-select-choices-content select2-results\"><li class=\"ui-select-choices-group\" ng-class=\"{\'select2-result-with-children\': $select.choiceGrouped($group) }\"><div ng-show=\"$select.choiceGrouped($group)\" class=\"ui-select-choices-group-label select2-result-label\" ng-bind=\"$group.name\"></div><ul ng-show=\"!$select.isLoading || $select.isScrolling\" role=\"listbox\" id=\"ui-select-choices-{{ $select.generatedId }}\" ng-class=\"{\'select2-result-sub\': $select.choiceGrouped($group), \'select2-result-single\': !$select.choiceGrouped($group) }\"><li role=\"option\" id=\"ui-select-choices-row-{{ $select.generatedId }}-{{$index}}\" class=\"ui-select-choices-row\" ng-class=\"{\'select2-highlighted\': $select.isActive(this), \'select2-disabled\': $select.isDisabled(this)}\"><div class=\"select2-result-label ui-select-choices-row-inner\"></div></li></ul><div ng-if=\"$select.isLoading\" class=\"ui-select-is-loading\">{{$select.loadingPlaceholder}}</div></li></ul>");
-$templateCache.put("select2/match-multiple.tpl.html","<span class=\"ui-select-match\"><li class=\"ui-select-match-item select2-search-choice\" ng-repeat-start=\"$item in $select.selected | limitTo: $select.showLimit\" ng-class=\"{\'select2-search-choice-focus\':$selectMultiple.activeMatchIndex === $index, \'select2-locked\':$select.isLocked(this, $index)}\" ng-if=\"displayMatchWhen($select, $item)\" ui-select-sort=\"$select.selected\"><span uis-transclude-append=\"\"></span> <a href=\"javascript:;\" class=\"ui-select-match-close select2-search-choice-close\" ng-click=\"$selectMultiple.removeChoice($index)\" tabindex=\"-1\"></a></li><div ng-repeat-end=\"\" ng-if=\"$last && $select.showLimit && $select.selected.length > $select.showLimit\"><ng-include src=\"chickletsDisplayTemplateUrl\" ng-if=\"chickletsDisplayTemplateUrl\"></ng-include><span ng-if=\"!chickletsDisplayTemplateUrl\"><span class=\"ng-binding ng-scope\">{{$select.selected.length}} of {{$select.items.length}}</span></span></div></span>");
+$templateCache.put("select2/match-multiple.tpl.html","<span class=\"ui-select-match\"><li class=\"ui-select-match-item select2-search-choice\" ng-if=\"(!$select.selected || !$select.selected.length) && $select.chickletsPlaceholder\"><span>{{$select.chickletsPlaceholder}}</span></li><li class=\"ui-select-match-item select2-search-choice\" ng-repeat-start=\"$item in $select.selected | limitTo: $select.showLimit\" ng-class=\"{\'select2-search-choice-focus\':$selectMultiple.activeMatchIndex === $index, \'select2-locked\':$select.isLocked(this, $index)}\" ng-if=\"displayMatchWhen($select, $item)\" ui-select-sort=\"$select.selected\"><span uis-transclude-append=\"\"></span> <a href=\"javascript:;\" class=\"ui-select-match-close select2-search-choice-close\" ng-click=\"$selectMultiple.removeChoice($index)\" tabindex=\"-1\"></a></li><div ng-repeat-end=\"\" ng-if=\"$last && $select.showLimit && $select.selected.length > $select.showLimit\"><ng-include src=\"chickletsDisplayTemplateUrl\" ng-if=\"chickletsDisplayTemplateUrl\"></ng-include><span ng-if=\"!chickletsDisplayTemplateUrl\"><span class=\"ng-binding ng-scope\">{{$select.selected.length}} of {{$select.items.length}}</span></span></div></span>");
 $templateCache.put("select2/match.tpl.html","<a class=\"select2-choice ui-select-match\" ng-class=\"{\'select2-default\': $select.isEmpty()}\" ng-click=\"$select.toggle($event)\" aria-label=\"{{ $select.baseTitle }} select\"><span ng-show=\"$select.isEmpty()\" class=\"select2-chosen\">{{$select.placeholder}}</span> <span ng-hide=\"$select.isEmpty()\" class=\"select2-chosen\" ng-transclude=\"\"></span> <abbr ng-if=\"$select.allowClear && !$select.isEmpty()\" class=\"select2-search-choice-close\" ng-click=\"$select.clear($event)\"></abbr> <span class=\"select2-arrow ui-select-toggle\"><b></b></span></a>");
 $templateCache.put("select2/select-multiple.tpl.html","<div class=\"ui-select-container ui-select-multiple select2 select2-container select2-container-multi\" ng-class=\"{\'select2-container-active select2-dropdown-open open\': $select.open, \'select2-container-disabled\': $select.disabled}\"><ul class=\"select2-choices\"><span class=\"ui-select-match\"></span><li class=\"select2-search-field\"><input type=\"text\" autocomplete=\"off\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"false\" role=\"combobox\" aria-expanded=\"true\" aria-owns=\"ui-select-choices-{{ $select.generatedId }}\" aria-label=\"{{ $select.baseTitle }}\" aria-activedescendant=\"ui-select-choices-row-{{ $select.generatedId }}-{{ $select.activeIndex }}\" class=\"select2-input ui-select-search\" placeholder=\"{{$selectMultiple.getPlaceholder()}}\" ng-disabled=\"$select.disabled\" ng-hide=\"$select.disabled\" ng-model=\"$select.search\" ng-click=\"$select.activate()\" style=\"width: 34px;\" ondrop=\"return false;\"></li><li class=\"select2-actions\" ng-repeat=\"action in $select.actions\"><a ng-if=\"!action.when || action.when($select)\" ng-click=\"action.action($select)\">{{action.text}}</a></li></ul><div class=\"select2-drop select2-with-searchbox select2-drop-active\" ng-class=\"{\'select2-display-none\': !$select.open}\"><div class=\"ui-select-choices\"></div></div></div>");
 $templateCache.put("select2/select.tpl.html","<div class=\"ui-select-container select2 select2-container\" ng-class=\"{\'select2-container-active select2-dropdown-open open\': $select.open, \'select2-container-disabled\': $select.disabled, \'select2-container-active\': $select.focus, \'select2-allowclear\': $select.allowClear && !$select.isEmpty()}\"><div class=\"ui-select-match\"></div><div class=\"select2-drop select2-with-searchbox select2-drop-active\" ng-class=\"{\'select2-display-none\': !$select.open}\"><div class=\"select2-search\" ng-show=\"$select.searchEnabled\"><input type=\"text\" autocomplete=\"off\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"false\" role=\"combobox\" aria-expanded=\"true\" aria-owns=\"ui-select-choices-{{ $select.generatedId }}\" aria-label=\"{{ $select.baseTitle }}\" aria-activedescendant=\"ui-select-choices-row-{{ $select.generatedId }}-{{ $select.activeIndex }}\" class=\"ui-select-search select2-input\" ng-model=\"$select.search\"></div><div class=\"ui-select-choices\"></div></div></div>");

@@ -22,7 +22,10 @@ uis.directive('uiSelectChoices',
         // var repeat = RepeatParser.parse(attrs.repeat);
         var groupByExp;
         if (attrs.groupBy && attrs.groupBy !== '') {
-          groupByExp = attrs.groupBy;
+          var gr = scope.$eval(attrs.groupBy);
+          if (gr && gr !== '') {
+            groupByExp = attrs.groupBy;
+          }
         }
 
         $select.parseRepeatAttr(attrs.repeat, groupByExp); //Result ready at $select.parserResult

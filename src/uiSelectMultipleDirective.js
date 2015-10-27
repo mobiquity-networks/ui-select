@@ -161,6 +161,7 @@ uis.directive('uiSelectMultiple', ['uiSelectMinErr','$timeout', function(uiSelec
 
       scope.$on('uis:select', function (event, item) {
         $select.chooseOneChoice(item);
+        $select.orderItems();
         $selectMultiple.updateModel();
       });
 

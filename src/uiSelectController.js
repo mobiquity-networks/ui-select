@@ -136,6 +136,7 @@ uis.controller('uiSelectCtrl',
           ctrl.setItemsFn(filteredItems);
         }
       }
+      ctrl.orderItems();
     };
 
     // See https://github.com/angular/angular.js/blob/v1.2.15/src/ng/directive/ngRepeat.js#L259
@@ -178,6 +179,7 @@ uis.controller('uiSelectCtrl',
       _refreshDelayPromise = $timeout(function() {
         $scope.$eval(refreshAttr);
       }, ctrl.refreshDelay);
+
     }
   };
   ctrl.onScroll = function(onScrollAttr) {
@@ -228,6 +230,22 @@ uis.controller('uiSelectCtrl',
     return isActive;
   };
 
+  ctrl.orderItems = function () {
+    if (ctrl.checkboxChoices) {
+      $timeout(function () {
+        $scope.$apply(function () {
+          ctrl.items.sort(function (item1, item2) {
+            if (ctrl.checkIfAlreadyChoosed(item1)) {
+              return (ctrl.checkIfAlreadyChoosed(item2) ? 0 : -1);
+            } else {
+              return (ctrl.checkIfAlreadyChoosed(item2) ? 1 : 0);
+            }
+          });
+        });
+      });
+    }
+  };
+
   ctrl.isDisabled = function(itemScope) {
 
     if (!ctrl.open) { return; }
@@ -263,12 +281,12 @@ uis.controller('uiSelectCtrl',
   }; 
   ctrl.chooseOneChoice = function (item) {
     if (!ctrl.checkIfAlreadyChoosed(item)) {
-      ctrl.selected.push(item);
       //item._uiSelctedItem = true;
+      ctrl.selected.push(item);
     } else {
+      //item._uiSelctedItem = false;
       ctrl.selected = ctrl.selected.slice(0, ctrl.selected.indexOf(item))
       .concat(ctrl.selected.slice(ctrl.selected.indexOf(item)+1)); 
-      //item._uiSelctedItem = false;
     }
   };
   ctrl.checkIfAlreadyChoosed = function (choice) {

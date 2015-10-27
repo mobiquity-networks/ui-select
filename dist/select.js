@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.11.2 - 2015-10-27T10:25:10.878Z
+ * Version: 0.11.2 - 2015-10-27T12:19:12.131Z
  * License: MIT
  */
 
@@ -246,6 +246,8 @@ uis.directive('uiSelectChoices',
           var refreshDelay = scope.$eval(attrs.refreshDelay);
           $select.refreshDelay = refreshDelay !== undefined ? refreshDelay : uiSelectConfig.refreshDelay;
         });
+
+        $select.orderItems();
       };
     }
   };
@@ -389,6 +391,7 @@ uis.controller('uiSelectCtrl',
           ctrl.setItemsFn(filteredItems);
         }
       }
+      ctrl.orderItems();
     };
 
     // See https://github.com/angular/angular.js/blob/v1.2.15/src/ng/directive/ngRepeat.js#L259
@@ -431,6 +434,7 @@ uis.controller('uiSelectCtrl',
       _refreshDelayPromise = $timeout(function() {
         $scope.$eval(refreshAttr);
       }, ctrl.refreshDelay);
+
     }
   };
   ctrl.onScroll = function(onScrollAttr) {
@@ -481,6 +485,20 @@ uis.controller('uiSelectCtrl',
     return isActive;
   };
 
+  ctrl.orderItems = function () {
+    $timeout(function () {
+      $scope.$apply(function () {
+        ctrl.items.sort(function (item1, item2) {
+          if (ctrl.checkIfAlreadyChoosed(item1)) {
+            return (ctrl.checkIfAlreadyChoosed(item2) ? 0 : -1);
+          } else {
+            return (ctrl.checkIfAlreadyChoosed(item2) ? 1 : 0);
+          }
+        });
+      });
+    });
+  };
+
   ctrl.isDisabled = function(itemScope) {
 
     if (!ctrl.open) { return; }
@@ -516,12 +534,12 @@ uis.controller('uiSelectCtrl',
   }; 
   ctrl.chooseOneChoice = function (item) {
     if (!ctrl.checkIfAlreadyChoosed(item)) {
-      ctrl.selected.push(item);
       //item._uiSelctedItem = true;
+      ctrl.selected.push(item);
     } else {
+      //item._uiSelctedItem = false;
       ctrl.selected = ctrl.selected.slice(0, ctrl.selected.indexOf(item))
       .concat(ctrl.selected.slice(ctrl.selected.indexOf(item)+1)); 
-      //item._uiSelctedItem = false;
     }
   };
   ctrl.checkIfAlreadyChoosed = function (choice) {
@@ -1292,6 +1310,7 @@ uis.directive('uiSelectMultiple', ['uiSelectMinErr','$timeout', function(uiSelec
 
       scope.$on('uis:select', function (event, item) {
         $select.chooseOneChoice(item);
+        $select.orderItems();
         $selectMultiple.updateModel();
       });
 

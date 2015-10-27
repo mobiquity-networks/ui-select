@@ -20,11 +20,18 @@ uis.directive('uiSelectChoices',
       return function link(scope, element, attrs, $select, transcludeFn) {
 
         // var repeat = RepeatParser.parse(attrs.repeat);
-        var groupByExp = attrs.groupBy;
+        var groupByExp;
+        if (attrs.groupBy && attrs.groupBy !== '') {
+          groupByExp = attrs.groupBy;
+        }
 
         $select.parseRepeatAttr(attrs.repeat, groupByExp); //Result ready at $select.parserResult
 
-        $select.disableChoiceExpression = attrs.uiDisableChoice;
+        if (attrs.uiFastDisableChoice) {
+          $select.disableChoiceExpression = scope.$eval(attrs.uiFastDisableChoice);
+        } else if (attrs.uiDisableChoice && attrs.uiDisableChoice !== '') {
+          $select.disableChoiceExpression = attrs.uiDisableChoice;
+        }
         $select.onHighlightCallback = attrs.onHighlight;
 
         if(groupByExp) {

@@ -147,6 +147,9 @@ app.controller('DemoCtrl', function($scope, $http, $timeout, $q, $templateCache,
     { name: 'Michael',   email: 'michael@email.com',   age: 15, country: 'Colombia' },
     { name: 'Nicolás',   email: 'nicolas@email.com',    age: 43, country: 'Colombia' }
   ];
+  $scope.fastDisable = function (item) {
+    return item.age < 18;
+  };
 
   $scope.availableColors = ['Red','Green','Blue','Yellow','Magenta','Maroon','Umbra','Turquoise'];
 

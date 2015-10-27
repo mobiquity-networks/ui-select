@@ -237,9 +237,15 @@ uis.controller('uiSelectCtrl',
     var item;
 
     if (itemIndex >= 0 && !angular.isUndefined(ctrl.disableChoiceExpression)) {
-      item = ctrl.items[itemIndex];
-      isDisabled = !!(itemScope.$eval(ctrl.disableChoiceExpression)); // force the boolean value
-      item._uiSelectChoiceDisabled = isDisabled; // store this for later reference
+      if (angular.isFunction(ctrl.disableChoiceExpression)) {
+        item = ctrl.items[itemIndex];
+        isDisabled = !!ctrl.disableChoiceExpression(item); // force the boolean value
+        item._uiSelectChoiceDisabled = isDisabled; // store this for later reference
+      } else {
+        item = ctrl.items[itemIndex];
+        isDisabled = !!(itemScope.$eval(ctrl.disableChoiceExpression)); // force the boolean value
+        item._uiSelectChoiceDisabled = isDisabled; // store this for later reference
+      }
     }
 
     return isDisabled;
@@ -258,12 +264,15 @@ uis.controller('uiSelectCtrl',
   ctrl.chooseOneChoice = function (item) {
     if (!ctrl.checkIfAlreadyChoosed(item)) {
       ctrl.selected.push(item);
+      //item._uiSelctedItem = true;
     } else {
       ctrl.selected = ctrl.selected.slice(0, ctrl.selected.indexOf(item))
       .concat(ctrl.selected.slice(ctrl.selected.indexOf(item)+1)); 
+      //item._uiSelctedItem = false;
     }
   };
   ctrl.checkIfAlreadyChoosed = function (choice) {
+    //return !!choice._uiSelctedItem;
     return ctrl.checkboxChoices && ctrl.selected.indexOf(choice) !== -1;
   };
 

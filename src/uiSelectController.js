@@ -136,7 +136,6 @@ uis.controller('uiSelectCtrl',
           ctrl.setItemsFn(filteredItems);
         }
       }
-      ctrl.orderItems();
     };
 
     // See https://github.com/angular/angular.js/blob/v1.2.15/src/ng/directive/ngRepeat.js#L259
@@ -228,38 +227,6 @@ uis.controller('uiSelectCtrl',
     }
 
     return isActive;
-  };
-
-  ctrl.orderItems = function () {
-    $timeout(function () {
-      $scope.$apply(function () {
-        if (ctrl.itemOrderKey) {
-          ctrl.items.sort(function (item1, item2) {
-          if (ctrl.checkIfAlreadyChoosed(item1)) {
-            return (
-              ctrl.checkIfAlreadyChoosed(item2) ?
-              (item1[ctrl.itemOrderKey] > item2[ctrl.itemOrderKey]) : -1
-            );
-          } else {
-            return (
-              ctrl.checkIfAlreadyChoosed(item2) ?
-              1 : (item1[ctrl.itemOrderKey] > item2[ctrl.itemOrderKey])
-            );
-          }
-        });
-      
-        } else {
-         ctrl.items.sort(function (item1, item2) {
-          if (ctrl.checkIfAlreadyChoosed(item1)) {
-            return (ctrl.checkIfAlreadyChoosed(item2) ? 0 : -1);
-          } else {
-            return (ctrl.checkIfAlreadyChoosed(item2) ? 1 : 0);
-          }
-        });
-       
-        }
-      });
-    });
   };
 
   ctrl.isDisabled = function(itemScope) {

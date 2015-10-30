@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 1.10.0 - 2015-10-30T14:05:24.407Z
+ * Version: 1.11.0 - 2015-10-30T14:27:35.802Z
  * License: MIT
  */
 
@@ -864,7 +864,11 @@ uis.directive('uiSelect',
           $select.onCloseCallback = $parse(attrs.onClose);
         }
         $select.onRemoveCallback = $parse(attrs.onRemove);
-        
+        if (attrs.initialState && attrs.initialState !== '') {
+          $select.innerState = attrs.initialState;
+        }
+ 
+
         //Set reference to ngModel from uiSelectCtrl
         $select.ngModel = ngModel;
 

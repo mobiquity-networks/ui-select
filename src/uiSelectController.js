@@ -84,6 +84,8 @@ uis.controller('uiSelectCtrl',
         ctrl.search = initSearchValue || ctrl.search;
         ctrl.searchInput[0].focus();
       });
+
+      ctrl.openCallback();
     }
   };
 
@@ -354,6 +356,7 @@ uis.controller('uiSelectCtrl',
     ctrl.open = false;
 
     $scope.$broadcast('uis:close', skipFocusser);
+    ctrl.closeCallback();
   };
   ctrl.closeCallback = function () {
     if (ctrl.onCloseCallback) {

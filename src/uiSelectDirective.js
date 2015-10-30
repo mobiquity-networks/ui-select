@@ -228,10 +228,8 @@ uis.directive('uiSelect',
           scope.$watch('$select.open', function(isOpen) {
             if (isOpen) {
               positionDropdown();
-              $select.openCallback();
             } else {
               resetDropdown();
-              $select.closeCallback();
             }
           });
 

@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 1.12.0 - 2015-10-30T16:18:21.342Z
+ * Version: 1.13.0 - 2015-10-30T16:26:26.847Z
  * License: MIT
  */
 
@@ -337,6 +337,8 @@ uis.controller('uiSelectCtrl',
         ctrl.search = initSearchValue || ctrl.search;
         ctrl.searchInput[0].focus();
       });
+
+      ctrl.openCallback();
     }
   };
 
@@ -607,6 +609,7 @@ uis.controller('uiSelectCtrl',
     ctrl.open = false;
 
     $scope.$broadcast('uis:close', skipFocusser);
+    ctrl.closeCallback();
   };
   ctrl.closeCallback = function () {
     if (ctrl.onCloseCallback) {
@@ -1056,10 +1059,8 @@ uis.directive('uiSelect',
           scope.$watch('$select.open', function(isOpen) {
             if (isOpen) {
               positionDropdown();
-              $select.openCallback();
             } else {
               resetDropdown();
-              $select.closeCallback();
             }
           });
 

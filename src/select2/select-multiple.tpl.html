@@ -24,12 +24,13 @@
         style="width: 34px;"
         ondrop="return false;">
     </li>
-    <li class="select2-actions" ng-repeat="action in $select.actions">
+    <li class="select2-actions" ng-repeat="action in $select.actions"  ng-if="(!action.when || action.when($select))">
 
-      <a ng-if="!action.when || action.when($select)"
+      <a ng-if="!action.templateUrl"
         ng-click="action.action($select)">
         {{action.text}}
       </a>
+      <ng-include ng-if="action.templateUrl" src="action.templateUrl"></ng-include>
 
     </li>
   </ul>

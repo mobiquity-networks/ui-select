@@ -354,10 +354,20 @@ uis.controller('uiSelectCtrl',
     ctrl.open = false;
 
     $scope.$broadcast('uis:close', skipFocusser);
-
+  };
+  ctrl.closeCallback = function () {
     if (ctrl.onCloseCallback) {
       $timeout(function(){
         ctrl.onCloseCallback($scope, {
+          $select: ctrl
+        });
+      });
+    }
+  };
+  ctrl.openCallback = function () {
+    if (ctrl.onOpenCallback) {
+      $timeout(function(){
+        ctrl.onOpenCallback($scope, {
           $select: ctrl
         });
       });

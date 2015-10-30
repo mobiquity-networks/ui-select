@@ -49,6 +49,9 @@ uis.directive('uiSelect',
         if (attrs.initialState && attrs.initialState !== '') {
           $select.innerState = attrs.initialState;
         }
+        if (attrs.onOpen && attrs.onOpen !== '') {
+          $select.onOpenCallback = $parse(attrs.onOpen);
+        }
  
 
         //Set reference to ngModel from uiSelectCtrl
@@ -225,8 +228,10 @@ uis.directive('uiSelect',
           scope.$watch('$select.open', function(isOpen) {
             if (isOpen) {
               positionDropdown();
+              $select.openCallback();
             } else {
               resetDropdown();
+              $select.closeCallback();
             }
           });
 

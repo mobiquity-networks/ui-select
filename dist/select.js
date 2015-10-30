@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 1.11.0 - 2015-10-30T14:27:35.802Z
+ * Version: 1.12.0 - 2015-10-30T16:18:21.342Z
  * License: MIT
  */
 
@@ -607,10 +607,20 @@ uis.controller('uiSelectCtrl',
     ctrl.open = false;
 
     $scope.$broadcast('uis:close', skipFocusser);
-
+  };
+  ctrl.closeCallback = function () {
     if (ctrl.onCloseCallback) {
       $timeout(function(){
         ctrl.onCloseCallback($scope, {
+          $select: ctrl
+        });
+      });
+    }
+  };
+  ctrl.openCallback = function () {
+    if (ctrl.onOpenCallback) {
+      $timeout(function(){
+        ctrl.onOpenCallback($scope, {
           $select: ctrl
         });
       });
@@ -867,6 +877,9 @@ uis.directive('uiSelect',
         if (attrs.initialState && attrs.initialState !== '') {
           $select.innerState = attrs.initialState;
         }
+        if (attrs.onOpen && attrs.onOpen !== '') {
+          $select.onOpenCallback = $parse(attrs.onOpen);
+        }
  
 
         //Set reference to ngModel from uiSelectCtrl
@@ -1043,8 +1056,10 @@ uis.directive('uiSelect',
           scope.$watch('$select.open', function(isOpen) {
             if (isOpen) {
               positionDropdown();
+              $select.openCallback();
             } else {
               resetDropdown();
+              $select.closeCallback();
             }
           });
 

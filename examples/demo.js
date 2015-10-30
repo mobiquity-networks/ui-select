@@ -41,7 +41,8 @@ app.filter('propsFilter', function() {
 
 app.controller('DemoCtrl', function($scope, $http, $timeout, $q, $templateCache, $interval) {
   $scope.when = function ($select, $item) {
-    return $select.selected.length < 3;
+    return true;
+    //return $select.selected.length < 3;
   };
 
   $templateCache.put('displayChicklet.tpl.html', [

@@ -330,6 +330,7 @@ uis.controller('uiSelectCtrl',
 
         $timeout(function(){
           ctrl.onSelectCallback($scope, {
+            $select: ctrl,
             $item: item,
             $model: ctrl.parserResult.modelMapper($scope, locals)
           });

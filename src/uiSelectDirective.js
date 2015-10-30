@@ -57,9 +57,14 @@ uis.directive('uiSelect',
           });
         }
 
-        if(attrs.showLimit){
+        $select.showLimit = 1/0;
+        if(attrs.showLimit && attrs.showLimit !== ''){
           attrs.$observe('showLimit', function(value) {
-            $select.showLimit = parseInt(value);
+            if (value && value !== '') {
+              $select.showLimit = parseInt(value, 10);
+            } else {
+              $select.showLimit = 1/0;
+            }
           });
         }
 

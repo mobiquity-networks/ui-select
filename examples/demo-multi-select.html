@@ -156,7 +156,10 @@
   </ui-select>
   -->
   <p>Selected: {{multipleDemo.selectedPeople}}</p>
-  <ui-select multiple ng-model="multipleDemo.selectedPeople" theme="select2" ng-disabled="disabled" sortable="true" close-on-select="false" style="width: 800px;" checkbox-choices="true" show-limit="3">
+  <ui-select multiple ng-model="multipleDemo.selectedPeople"
+    theme="select2" ng-disabled="disabled"
+    sortable="true"
+    close-on-select="false" style="width: 800px;" checkbox-choices="true">
     <ui-select-match
       placeholder="Select person..."
       display-match-when="when"

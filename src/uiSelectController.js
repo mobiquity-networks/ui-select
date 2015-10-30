@@ -355,6 +355,13 @@ uis.controller('uiSelectCtrl',
 
     $scope.$broadcast('uis:close', skipFocusser);
 
+    if (ctrl.onCloseCallback) {
+      $timeout(function(){
+        ctrl.onCloseCallback($scope, {
+          $select: ctrl
+        });
+      });
+    }
   };
 
   ctrl.setFocus = function(){

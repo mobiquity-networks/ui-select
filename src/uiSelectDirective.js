@@ -42,6 +42,9 @@ uis.directive('uiSelect',
         }();
 
         $select.onSelectCallback = $parse(attrs.onSelect);
+        if (attrs.onClose && attrs.onClose !== '') {
+          $select.onCloseCallback = $parse(attrs.onClose);
+        }
         $select.onRemoveCallback = $parse(attrs.onRemove);
         
         //Set reference to ngModel from uiSelectCtrl

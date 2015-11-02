@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 1.13.0 - 2015-10-30T16:26:26.847Z
+ * Version: 1.13.1 - 2015-11-02T08:54:36.389Z
  * License: MIT
  */
 
@@ -258,8 +258,8 @@ uis.directive('uiSelectChoices',
  * put as much logic in the controller (instead of the link functions) as possible so it can be easily tested.
  */
 uis.controller('uiSelectCtrl',
-  ['$scope', '$element', '$timeout', '$filter', 'uisRepeatParser', 'uiSelectMinErr', 'uiSelectConfig',
-  function($scope, $element, $timeout, $filter, RepeatParser, uiSelectMinErr, uiSelectConfig) {
+  ['$scope', '$element', '$timeout', '$filter', 'uisRepeatParser', 'uiSelectMinErr', 'uiSelectConfig', 'uiSelectMethods',
+  function($scope, $element, $timeout, $filter, RepeatParser, uiSelectMinErr, uiSelectConfig, uiSelectMethods) {
 
   var ctrl = this;
 
@@ -827,7 +827,21 @@ uis.controller('uiSelectCtrl',
     ctrl.searchInput.off('keyup keydown tagged blur paste');
   });
 
-}]);
+  uiSelectMethods.pushSelected = function (items) {
+    $timeout(function () {
+      $scope.$apply(function () { ctrl.selected.concat(items); });
+    });
+  };
+  uiSelectMethods.clearSelected = function () {
+    $timeout(function () {
+      $scope.$apply(function () { ctrl.selected = []; });
+    });
+  };
+
+}])
+.factory('uiSelectMethods', function () {
+  return { };
+});
 
 uis.directive('uiSelect',
   ['$document', 'uiSelectConfig', 'uiSelectMinErr', 'uisOffset', '$compile', '$parse', '$timeout',

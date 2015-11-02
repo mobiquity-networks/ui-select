@@ -584,11 +584,17 @@ uis.controller('uiSelectCtrl',
       $scope.$apply(function () { ctrl.selected = []; });
     });
   };
+  uiSelectMethods.getSelected = function () {
+    return ctrl.selected;
+  };
+
+
 
 }])
 .factory('uiSelectMethods', function () {
   return {
     pushSelected: function () {},
-    clearSelected: function () {}
+    clearSelected: function () {},
+    getSelected: function () {}
   };
 });

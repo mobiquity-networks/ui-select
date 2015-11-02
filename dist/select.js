@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 1.13.1 - 2015-11-02T08:54:36.389Z
+ * Version: 1.14.1 - 2015-11-02T10:42:49.034Z
  * License: MIT
  */
 
@@ -837,10 +837,19 @@ uis.controller('uiSelectCtrl',
       $scope.$apply(function () { ctrl.selected = []; });
     });
   };
+  uiSelectMethods.getSelected = function () {
+    return ctrl.selected;
+  };
+
+
 
 }])
 .factory('uiSelectMethods', function () {
-  return { };
+  return {
+    pushSelected: function () {},
+    clearSelected: function () {},
+    getSelected: function () {}
+  };
 });
 
 uis.directive('uiSelect',

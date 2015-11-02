@@ -587,5 +587,8 @@ uis.controller('uiSelectCtrl',
 
 }])
 .factory('uiSelectMethods', function () {
-  return { };
+  return {
+    pushSelected: function () {},
+    clearSelected: function () {}
+  };
 });

@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 1.14.1 - 2015-11-02T10:42:49.034Z
+ * Version: 1.14.2 - 2015-11-16T10:04:55.180Z
  * License: MIT
  */
 
@@ -258,8 +258,8 @@ uis.directive('uiSelectChoices',
  * put as much logic in the controller (instead of the link functions) as possible so it can be easily tested.
  */
 uis.controller('uiSelectCtrl',
-  ['$scope', '$element', '$timeout', '$filter', 'uisRepeatParser', 'uiSelectMinErr', 'uiSelectConfig', 'uiSelectMethods',
-  function($scope, $element, $timeout, $filter, RepeatParser, uiSelectMinErr, uiSelectConfig, uiSelectMethods) {
+  ['$scope', '$element', '$timeout', '$filter', 'uisRepeatParser', 'uiSelectMinErr', 'uiSelectConfig',
+  function($scope, $element, $timeout, $filter, RepeatParser, uiSelectMinErr, uiSelectConfig) {
 
   var ctrl = this;
 
@@ -827,30 +827,7 @@ uis.controller('uiSelectCtrl',
     ctrl.searchInput.off('keyup keydown tagged blur paste');
   });
 
-  uiSelectMethods.pushSelected = function (items) {
-    $timeout(function () {
-      $scope.$apply(function () { ctrl.selected.concat(items); });
-    });
-  };
-  uiSelectMethods.clearSelected = function () {
-    $timeout(function () {
-      $scope.$apply(function () { ctrl.selected = []; });
-    });
-  };
-  uiSelectMethods.getSelected = function () {
-    return ctrl.selected;
-  };
-
-
-
-}])
-.factory('uiSelectMethods', function () {
-  return {
-    pushSelected: function () {},
-    clearSelected: function () {},
-    getSelected: function () {}
-  };
-});
+}]);
 
 uis.directive('uiSelect',
   ['$document', 'uiSelectConfig', 'uiSelectMinErr', 'uisOffset', '$compile', '$parse', '$timeout',
@@ -864,7 +841,7 @@ uis.directive('uiSelect',
     },
     replace: true,
     transclude: true,
-    require: ['uiSelect', '^ngModel'],
+    require: ['uiSelect', '^ngModel', '?^uiMethods'],
     scope: true,
 
     controller: 'uiSelectCtrl',
@@ -881,6 +858,10 @@ uis.directive('uiSelect',
 
         var $select = ctrls[0];
         var ngModel = ctrls[1];
+        var uiMethods = ctrls[2] || {};
+        uiMethods.getSelected = function () {
+          return $select.selected;
+        };
 
         $select.generatedId = uiSelectConfig.generateId();
         $select.baseTitle = attrs.title || 'Select box';
@@ -906,7 +887,13 @@ uis.directive('uiSelect',
         if (attrs.onOpen && attrs.onOpen !== '') {
           $select.onOpenCallback = $parse(attrs.onOpen);
         }
- 
+        $select.getSelected = function () {};
+        if (attrs.getSelected && attrs.getSelected !== '') {
+          $select.getSelectedExposed = $parse(attrs.getSelected);
+          $select.getSelectedExposed = function () {
+            return $select.getSelected();
+          };
+        }
 
         //Set reference to ngModel from uiSelectCtrl
         $select.ngModel = ngModel;

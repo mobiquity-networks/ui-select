@@ -5,8 +5,8 @@
  * put as much logic in the controller (instead of the link functions) as possible so it can be easily tested.
  */
 uis.controller('uiSelectCtrl',
-  ['$scope', '$element', '$timeout', '$filter', 'uisRepeatParser', 'uiSelectMinErr', 'uiSelectConfig', 'uiSelectMethods',
-  function($scope, $element, $timeout, $filter, RepeatParser, uiSelectMinErr, uiSelectConfig, uiSelectMethods) {
+  ['$scope', '$element', '$timeout', '$filter', 'uisRepeatParser', 'uiSelectMinErr', 'uiSelectConfig',
+  function($scope, $element, $timeout, $filter, RepeatParser, uiSelectMinErr, uiSelectConfig) {
 
   var ctrl = this;
 
@@ -574,27 +574,4 @@ uis.controller('uiSelectCtrl',
     ctrl.searchInput.off('keyup keydown tagged blur paste');
   });
 
-  uiSelectMethods.pushSelected = function (items) {
-    $timeout(function () {
-      $scope.$apply(function () { ctrl.selected.concat(items); });
-    });
-  };
-  uiSelectMethods.clearSelected = function () {
-    $timeout(function () {
-      $scope.$apply(function () { ctrl.selected = []; });
-    });
-  };
-  uiSelectMethods.getSelected = function () {
-    return ctrl.selected;
-  };
-
-
-
-}])
-.factory('uiSelectMethods', function () {
-  return {
-    pushSelected: function () {},
-    clearSelected: function () {},
-    getSelected: function () {}
-  };
-});
+}]);

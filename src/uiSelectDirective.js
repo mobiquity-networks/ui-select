@@ -10,7 +10,7 @@ uis.directive('uiSelect',
     },
     replace: true,
     transclude: true,
-    require: ['uiSelect', '^ngModel'],
+    require: ['uiSelect', '^ngModel', '?^uiMethods'],
     scope: true,
 
     controller: 'uiSelectCtrl',
@@ -27,6 +27,10 @@ uis.directive('uiSelect',
 
         var $select = ctrls[0];
         var ngModel = ctrls[1];
+        var uiMethods = ctrls[2] || {};
+        uiMethods.getSelected = function () {
+          return $select.selected;
+        };
 
         $select.generatedId = uiSelectConfig.generateId();
         $select.baseTitle = attrs.title || 'Select box';
@@ -52,7 +56,13 @@ uis.directive('uiSelect',
         if (attrs.onOpen && attrs.onOpen !== '') {
           $select.onOpenCallback = $parse(attrs.onOpen);
         }
- 
+        $select.getSelected = function () {};
+        if (attrs.getSelected && attrs.getSelected !== '') {
+          $select.getSelectedExposed = $parse(attrs.getSelected);
+          $select.getSelectedExposed = function () {
+            return $select.getSelected();
+          };
+        }
 
         //Set reference to ngModel from uiSelectCtrl
         $select.ngModel = ngModel;
